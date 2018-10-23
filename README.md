@@ -19,3 +19,10 @@ This data was interpolated via inverse distance weighting from aerial surveys. S
 ## COTS data
 
 This data was interpolated via inverse distance weighting from in water observation. See COTSInterpolation.R for details
+
+
+## References
+
+1. Huang, Z. et al. Australian Marine Physical Environmental Data-Description and Metadata. Gesoscience Australia Record 2010/32 (2010). at <https://data.gov.au/dataset/australian-marine-physical-environmental-data-descriptions-and-metadata>
+
+2. Puotinen, M., Maynard, J. A., Beeden, R., Radford, B. & Williams, G. J. A robust operational model for predicting where tropical cyclone waves damage coral reefs. Sci. Rep. 6, 26009 (2016).
