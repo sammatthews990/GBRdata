@@ -1,0 +1,54 @@
+---
+title: "Bleaching Interpolation"
+author: "Samuel Matthews"
+date: "1 March 2018"
+output: html_document
+---
+
+THis Document interpolateds the 1998,2002, and 2016 Aerial Surveys using inverse distance weighted (interpolation)
+
+
+```{r}
+library(dplyr)
+library(sp)
+# install.packages("gstat")
+# load environmental data and bleaching aerial surveys.
+# load environmental data to define the lat-lon locations
+XYZ = read.csv("RawData/Environmental_data.csv", header =T)[1:4]
+# 1998, 2002 aerial surveys
+bl9802 = read.csv("RawData/bleach9802.csv", header = T)
+bl98 = bl9802 %>% filter(year==1998) %>% select(3,4:5,8)
+bl02 = bl9802 %>% filter(year==2002) %>% select(3,4:5,8)
+
+# 2016 Aerial surveys
+bl16 = read.csv("RawData/2016AerialSurvey.csv", header = T)[2:5]
+colnames(bl02) = colnames(bl98) = colnames(bl16)
+
+# convert to same 1-5 scale
+bl16$BleachingCategory = bl16$BleachingCategory
+bl98$BleachingCategory = 5-bl98$BleachingCategory
+bl02$BleachingCategory = 5-bl02$BleachingCategory
+
+# convert to Spatial Pointsa Data Frames
+coordinates(XYZ) = ~lon+lat
+gridded(XYZ) = TRUE
+
+coordinates(bl98) = coordinates(bl02) = coordinates(bl16) =~Longitude+Latitude
+
+save(file = "RawData.Rdata", list = c("bl98","bl16","bl02","XYZ"))
+
+# Inverse distance weighting interpolation
+bl98.idw = as.data.frame(gstat::idw(BleachingCategory~1, bl98, XYZ, maxdist = 1, nmin= 3))
+bl02.idw = as.data.frame(gstat::idw(BleachingCategory~1, bl02, XYZ, maxdist = 1, nmin= 3))
+bl16.idw = as.data.frame(gstat::idw(BleachingCategory~1, bl16, XYZ, maxdist = 1, nmin= 3))
+
+# jon results to pixel identifiers
+bleach = as.data.frame(XYZ) %>% 
+  inner_join(bl98.idw[1:3], by=c("lon", "lat")) %>%
+  inner_join(bl02.idw[1:3], by=c("lon", "lat")) %>% 
+  inner_join(bl16.idw[1:3], by=c("lon", "lat")) 
+bleach[5:7] = round(bleach[5:7])
+colnames(bleach)[5:7] = paste0("bleach_", c("1998", "2002", "2016"))
+write.csv(bleach[,1:6], "Bleaching_data.csv", row.names = F)
+write.csv(bleach, "Bleaching_data_98_02_16.csv", row.names = F)
+```
