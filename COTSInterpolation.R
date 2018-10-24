@@ -1,10 +1,12 @@
 # 1. Import Manta data
 # 2. Average CoTS count per manta tow for each year
-# 3. Find the nearest GBRMPA site to LMTP
-# 4. Add CoTS data to XYZ
-install.packages("tidyverse")
-install.packages("rgeos")
-install.packages("sp")
+# 3. Load preprocessed Data
+# 4. Interpolate
+
+
+# install.packages("tidyverse")
+# install.packages("rgeos")
+# install.packages("sp")
 library(tidyverse)
 library(sp)
 library(rgeos)
