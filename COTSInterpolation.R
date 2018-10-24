@@ -13,23 +13,23 @@ library(rgeos)
 library(gstat)
 
 # 1. Load Data and PreProcessing ----
-#setwd("C:/Users/jc312264/OneDrive - James Cook University/PhDThymes/Modelling/Chapter1_DisturbanceRegimes")
-manta = read.csv("Data/ltmp/manta.csv") #LTMP Manta Tow Data
-XYZ = read.csv("Data/FinalDataFiles/Environmental_data.csv")[1:5] #GBRMPA 0.01 degree grid
-# benthos <- read.csv("ltmp/benthos.csv")
-
-# 2. Average COTS/Manta Per Site ----
-colnames(manta)[6] = "LONG"
-
-# need to create a calender year column
-manta$CALENDER_YEAR = substring(as.character(manta$SDATE),8,11)
-
-# create average COTS/manta tow for each year
-manta_year = manta %>% group_by(REEF_NAME, LAT, LONG, CALENDER_YEAR) %>%
-                        dplyr::summarise(mean_COTS = mean(COT_COUNT)) %>% 
-                        spread(key = CALENDER_YEAR, value = mean_COTS)
-
-save(file = "RawData_COTS.Rdata", list = c("manta_year", "XYZ"))
+# #setwd("C:/Users/jc312264/OneDrive - James Cook University/PhDThymes/Modelling/Chapter1_DisturbanceRegimes")
+# manta = read.csv("Data/ltmp/manta.csv") #LTMP Manta Tow Data
+# XYZ = read.csv("Data/FinalDataFiles/Environmental_data.csv")[1:5] #GBRMPA 0.01 degree grid
+# # benthos <- read.csv("ltmp/benthos.csv")
+# 
+# # 2. Average COTS/Manta Per Site ----
+# colnames(manta)[6] = "LONG"
+# 
+# # need to create a calender year column
+# manta$CALENDER_YEAR = substring(as.character(manta$SDATE),8,11)
+# 
+# # create average COTS/manta tow for each year
+# manta_year = manta %>% group_by(REEF_NAME, LAT, LONG, CALENDER_YEAR) %>%
+#                         dplyr::summarise(mean_COTS = mean(COT_COUNT)) %>% 
+#                         spread(key = CALENDER_YEAR, value = mean_COTS)
+# 
+# save(file = "RawData_COTS.Rdata", list = c("manta_year", "XYZ"))
 
 # 3. Load Processed Data (Start here for Github users) ----
 
