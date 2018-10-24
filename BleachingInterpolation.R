@@ -2,7 +2,7 @@ library(dplyr)
 # install.packages("gstat")
 setwd("C:/Users/jc312264/Documents/GitHub/GBRdata")
 # load environmental data and bleaching aerial surveys.
-load("RawData.Rdata")
+load("RawData_bleaching.Rdata")
 
 # Inverse distance weighting interpolation
 bl98.idw = as.data.frame(gstat::idw(BleachingCategory~1, bl98, XYZ, maxdist = 1, nmin= 3))

@@ -13,7 +13,7 @@ library(gstat)
 # 1. LOad Data ----
 setwd("C:/Users/jc312264/OneDrive - James Cook University/PhDThymes/Modelling/Chapter1_DisturbanceRegimes")
 manta = read.csv("Data/ltmp/manta.csv") #LTMP Manta Tow Data
-XYZ = read.csv("Data/FinalDataFiles/Environmental_data.csv") #GBRMPA 0.01 degree grid
+XYZ = read.csv("Data/FinalDataFiles/Environmental_data.csv")[1:5] #GBRMPA 0.01 degree grid
 # benthos <- read.csv("ltmp/benthos.csv")
 
 # 2. Average COTS/Manta Per Site ----
@@ -56,7 +56,7 @@ colnames(manta_year)[2:3] <- c("LONG", "LAT") # coords were in different order
 colnames(XYZ)[2:3] <- c("LONG", "LAT")
 
 # Add Grid identifiers
-XYZ_COTS <- inner_join(XYZ, manta_year, by=c("LAT", "LONG")) %>% 
+XYZ_COTS <- inner_join(XYZ, select(manta_year, -REEF_NAME), by=c("LAT", "LONG")) %>% 
   #join if the distance that the LTMP site has been moved is below a 
-  #certain threshold and keeps NA's
+  #0.02 degree and keeps NA's
             filter(min.gd < 0.02 | is.na(min.gd)) 
